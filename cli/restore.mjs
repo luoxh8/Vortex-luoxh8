@@ -4,7 +4,9 @@
 //   node cli/restore.mjs --all        游戏里已有译文也覆盖（Vortex 重新部署后用这个）
 //   node cli/restore.mjs --dry-run    只看会动哪些模组，不真写
 //
-// 什么时候用它：Vortex 的 Purge/Deploy 会把模组的 i18n 覆盖回英文，跑一次这个就回来了。
+// 什么时候用它：Vortex 的 Purge/Deploy 会从压缩包重新解压，把手工改的译文盖回去，
+// 跑一次这个就回来了。（游戏目录里的模组文件是符号链接，指向 Vortex 仓库，
+// 所以往游戏目录写，实际就是写给 Vortex 仓库。）
 //
 // 跟 apply 的区别：apply 是「把数据写回去」，restore 是「不管游戏里现在是什么样，
 // 都用数据重新算一遍并覆盖」。数据是唯一事实来源，所以它不受游戏目录被改乱的影响。

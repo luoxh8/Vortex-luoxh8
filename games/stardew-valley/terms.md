@@ -113,9 +113,15 @@ Dislike = 不喜欢，Hate = 讨厌；Friendship = 好感度，heart = 颗心。
 
 ## 已知情况
 
-Vortex 每次 Purge / Deploy 都可能把模组的 `i18n` 覆盖回英文，重跑
-`node cli\restore.mjs --game stardew-valley --all` 即可。同一时刻它还会把模组
-DLL 变成 0 字节——那属于 Vortex 部署本身的问题，跟译文无关。
+Vortex 用的是软部署：游戏目录里的模组文件是**符号链接**，指向
+`%APPDATA%\Vortex\stardewvalley\mods\` 里的真实文件。
+
+- **显示 0 字节是正常的**，不是坏文件。`dir /AL` 能看到 `<SYMLINK>` 和指向；
+  `Get-Item` 读 `.Length` 只会得到 0。`Get-Content` 能读到内容是正常的，它穿透了链接。
+- 在游戏目录里改文件 = 改 Vortex 仓库里那份（同一个文件）。
+- 但 Vortex Purge / Deploy 时会从压缩包重新解压，手工改的译文会被盖回去。
+  那时重跑 `node cli\restore.mjs --game stardew-valley --all` 即可，
+  译文数据在 `games/stardew-valley/i18n/`，随时能重建。
 
 `backup/applied-*` 会自动生成，可以清；`backup/original-en` 和 `backup/original-zh`
 是长期资产，别删。
