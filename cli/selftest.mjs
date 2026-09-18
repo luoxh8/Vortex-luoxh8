@@ -162,6 +162,28 @@ check('两个字母以上的英文标签算没翻（例如 ID 这种确实要翻
   }
 });
 
+check('纯网址和纯标识符不算没翻', () => {
+  for (const v of [
+    'https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings',
+    'www.example.com/guide',
+    'Modding:Player_Guide',
+  ]) {
+    assert(!looksUntranslated(v), `${v} 不应算未翻译`);
+  }
+});
+
+check('占位符加分隔符的格式模板不算没翻', () => {
+  for (const v of ['{{Current}} / {{Total}}', '{{Reaction}} • {{Friendship}} • {{Sort}}', '{{a}}-{{b}}']) {
+    assert(!looksUntranslated(v), `${v} 不应算未翻译`);
+  }
+});
+
+check('带说明文字的占位符模板仍算没翻', () => {
+  for (const v of ['{{name}} is ready', 'Send {{Gift}} to {{Npc}}?']) {
+    assert(looksUntranslated(v), `${v} 应算未翻译`);
+  }
+});
+
 check('占位符比较：允许换位与重复，不允许删改', () => {
   assertEqual(placeholdersOf('{{a}} 和 {{b}}'), placeholdersOf('{{b}} 与 {{a}}'), '换位应视为一致');
   assertEqual(placeholdersOf('{0} 个 {1}'), placeholdersOf('{1} 的 {0}'), '数字占位符换位应一致');

@@ -23,7 +23,7 @@ cli/apply.mjs           ② 应用：把译文写回游戏（备份 → 写入 �
 cli/verify.mjs          ③ 校验：键对齐、占位符完好、无重复键、无漏翻
 cli/restore.mjs         ④ 还原：Vortex 覆盖后按数据重算并拷回
 cli/dump.mjs            ⑤ 导出：把待翻译原文列出来，供新模组录入
-cli/selftest.mjs        ⑥ 自检：不碰游戏，用临时目录验证工具本身（24 项）
+cli/selftest.mjs        ⑥ 自检：不碰游戏，用临时目录验证工具本身（27 项）
 
 games/<游戏>/
   game.json             这个游戏的路径与文件名规则
@@ -125,11 +125,15 @@ node cli\apply.mjs --game "E:\Steam\steamapps\common\Stardew Valley"
 5. 没有漏翻的条目（值里还是拉丁字母、且不含中文）。
 
 判定「算不算还没翻」的规则集中在 `lib/lang.mjs`，`scan` / `verify` / `dump` 三处共用，
-不会出现同一个文件在不同命令下结论不一样的情况。其中有一条重要例外：
+不会出现同一个文件在不同命令下结论不一样的情况。其中有两条重要例外：
 
-**纯占位符模板不算没翻。** 例如 Chests Anywhere 的 `default-name.other` 值是
-`{{name}} #{{number}}`、Automate 的 `config.chest-override.name` 值是 `{{chestName}}`。
-界面上显示的是游戏内置的名字（箱子名、物品名等），游戏本身会翻，硬翻反而出错。
+**纯占位符 / 格式模板不算没翻。** 把 `{{...}}` 全部挖掉后一个字母数字都不剩的，就属于
+这一类：`{{name}} #{{number}}`（界面显示的是游戏内置的箱子名）、`{{Current}} / {{Total}}`
+（显示的是页码数字）。翻掉反而出错或占地方。
+但 `{{name}} is ready`、`Send {{Gift}} to {{Npc}}?` 还有说明文字，照常要翻。
+
+**纯网址不算没翻。** 例如 `https://stardewvalleywiki.com/Modding:Player_Guide`，
+翻掉反而让人没法访问。
 
 ## 为什么需要这套东西
 

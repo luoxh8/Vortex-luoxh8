@@ -24,23 +24,35 @@ node cli\restore.mjs --game stardew-valley --all
 
 ## 当前覆盖情况
 
-12 个模组，共 1129 条。另外 `Console Commands` 和 `Save Backup` 没有 i18n 文件，
-没有界面文本可翻。
+15 个模组，共 1329 条。另外这几个没有可翻的界面文本：
+
+- `Console Commands`、`Save Backup`：没有 i18n 文件。
+- `Skull Cavern Elevator`：文字写死在编译好的 DLL 里（见下）。
 
 | 模组 | 条数 | 当初的情况 | 数据文件 |
 |---|---|---|---|
 | Fishing Assistant 3 | 379 | 完全没有中文，全部新译 | `FishingAssistant.json` |
 | CJB Cheats Menu | 153 | 补 4 处残留英文 | `.patch.json` |
 | Tractor Mod | 142 | 补 2 处残留英文，并修正 1 处丢失的占位符 | `.patch.json` |
+| Smart Building | 128 | 补齐新版新增的 6 条；另有 1 条纯网址保留原文 | `SmartBuilding.json` |
 | Convenient Inventory | 123 | 旧译文是老版本机翻且带已删除选项，按当前版本重做 | `ConvenientInventory.json` |
 | Chests Anywhere | 85 | 补 2 处（纯格式模板，实际无需翻译） | `.patch.json` |
+| Mail Services Better Menu | 83 | 完全没有中文，全部新译 | `MailServicesBetterMenu.json` |
 | Fast Animations | 79 | 原本已完整 | `FastAnimations.json` |
 | Automate | 52 | 补 5 处残留英文 | `.patch.json` |
+| Mail Services Mod | 33 | 补齐新版新增的 3 条 | `MailServicesMod.json` |
 | CJB Item Spawner | 30 | 原本已完整 | `CJBItemSpawner.json` |
 | Carry Chests | 29 | 中文文件整份是英文，全部翻译 | `CarryChests.json` |
 | Resource Storage | 27 | 补 10 条缺失项 | `.append.json` |
 | Generic Mod Config Menu | 17 | 补 2 处残留英文 | `.patch.json` |
 | Recatch Legendary Fish | 13 | 补 8 处残留英文 | `RecatchLegendaryFish.json` |
+
+## 翻不了的模组
+
+**Skull Cavern Elevator**（骷髅洞穴电梯）：作者没有做多语言支持，界面上那几条配置文字
+（`Elevator Step`、`ElevatorCostPerStep` 等）是直接写在源码里编译进 DLL 的，游戏目录
+里没有语言文件可以改。要改只能反编译改 DLL，不划算也不可持续。如果很在意，建议去
+Nexus 给作者留言请他加 i18n 支持。
 
 ## 术语表
 
@@ -74,6 +86,11 @@ node cli\restore.mjs --game stardew-valley --all
 
 界面通用词：Quick Stack = 快速堆叠，Tackle = 渔具，Tractor = 拖拉机，
 Overburdened = 负重过度，Keybind = 按键 / 快捷键。
+
+好感度相关（邮件服务系列）：Love = 最爱，Like = 喜欢，Neutral = 一般，
+Dislike = 不喜欢，Hate = 讨厌；Friendship = 好感度，heart = 颗心。
+
+礼物品质：normal = 普通，silver = 银星，gold = 金星，iridium = 铱星。
 
 ## 注意
 
