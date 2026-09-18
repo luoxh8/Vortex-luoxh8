@@ -16,12 +16,14 @@ core/jsonc.mjs          解析「JSON + 注释」的语言文件（JSON.parse �
 lib/game.mjs            读 game.json、定位游戏目录
 lib/i18n-file.mjs       读写翻译文件、整份生成 / 改写 / 追加
 lib/plans.mjs           文件名 → 该做什么操作（apply 与 restore 共用同一份规则）
+lib/lang.mjs            「这条算不算还没翻」的判定 + 占位符比较（scan/verify/dump 共用）
 cli/_common.mjs         命令行公共部分（参数解析、定位游戏与语言）
 cli/scan.mjs            ① 盘点：还有哪些没翻
 cli/apply.mjs           ② 应用：把译文写回游戏（备份 → 写入 → 快照 → 校验）
 cli/verify.mjs          ③ 校验：键对齐、占位符完好、无重复键、无漏翻
 cli/restore.mjs         ④ 还原：Vortex 覆盖后按数据重算并拷回
-cli/selftest.mjs        ⑤ 自检：不碰游戏，用临时目录验证工具本身（17 项）
+cli/dump.mjs            ⑤ 导出：把待翻译原文列出来，供新模组录入
+cli/selftest.mjs        ⑥ 自检：不碰游戏，用临时目录验证工具本身（24 项）
 
 games/<游戏>/
   game.json             这个游戏的路径与文件名规则
@@ -43,6 +45,9 @@ node cli\restore.mjs --game stardew-valley --all    :: 覆盖后整份还原
 
 :: 工具本身好不好用（不碰游戏）
 node cli\selftest.mjs
+
+:: 新模组 / 漏翻的条目，把原文导出来录入
+node cli\dump.mjs --game stardew-valley --mod <模组名> --missing-only
 ```
 
 游戏装的位置和默认的不一样时，用 `--game <路径>` 直接给游戏根目录：
@@ -118,6 +123,13 @@ node cli\apply.mjs --game "E:\Steam\steamapps\common\Stardew Valley"
 4. **占位符没被动过**：`{{名字}}` 由模组替换、`{0}` `{1}` 由代码格式化，可以调换位置、
    可以重复用，但不能删、不能改拼写。
 5. 没有漏翻的条目（值里还是拉丁字母、且不含中文）。
+
+判定「算不算还没翻」的规则集中在 `lib/lang.mjs`，`scan` / `verify` / `dump` 三处共用，
+不会出现同一个文件在不同命令下结论不一样的情况。其中有一条重要例外：
+
+**纯占位符模板不算没翻。** 例如 Chests Anywhere 的 `default-name.other` 值是
+`{{name}} #{{number}}`、Automate 的 `config.chest-override.name` 值是 `{{chestName}}`。
+界面上显示的是游戏内置的名字（箱子名、物品名等），游戏本身会翻，硬翻反而出错。
 
 ## 为什么需要这套东西
 

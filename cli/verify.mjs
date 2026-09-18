@@ -14,10 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs, contextOrExit } from './_common.mjs';
 import { listMods, readI18n } from '../lib/i18n-file.mjs';
 import { findDuplicateKeys } from '../core/jsonc.mjs';
-
-const CJK = /[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/;
-const placeholders = (s) => (String(s).match(/\{\{[^}]+\}\}|\{\d+(?::[^}]*)?\}/g) || []).sort().join('|');
-const onlyPlaceholders = (v) => /^\{\{/.test(v.trim()) && /^[\s{}#.\w]*$/.test(v.replace(/\{\{[^}]*\}\}/g, ''));
+import { looksUntranslated, placeholdersOf } from '../lib/lang.mjs';
 
 /** 对指定模组做全部检查 */
 export function verifyAll(ctx, onlyMods) {
@@ -51,12 +48,10 @@ export function verifyAll(ctx, onlyMods) {
     if (missing.length) problems.push(`缺 ${missing.length} 个键：${missing.slice(0, 5).join(', ')}`);
     if (extra.length) problems.push(`多 ${extra.length} 个键：${extra.slice(0, 5).join(', ')}`);
 
-    const phBad = Object.keys(source).filter(k => k in target && placeholders(source[k]) !== placeholders(target[k]));
+    const phBad = Object.keys(source).filter(k => k in target && placeholdersOf(source[k]) !== placeholdersOf(target[k]));
     if (phBad.length) problems.push(`占位符不一致 ${phBad.length} 处：${phBad.slice(0, 3).join(', ')}`);
 
-    const untranslated = Object.keys(source).filter(k =>
-      k in target && typeof target[k] === 'string' && !CJK.test(target[k])
-      && /[A-Za-z]{3,}/.test(target[k]) && !onlyPlaceholders(target[k]));
+    const untranslated = Object.keys(source).filter(k => k in target && looksUntranslated(target[k]));
     if (untranslated.length) problems.push(`未翻译 ${untranslated.length} 处：${untranslated.slice(0, 5).join(', ')}`);
 
     return { mod, keys: Object.keys(target).length, problems };

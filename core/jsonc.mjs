@@ -11,7 +11,9 @@ const ESCAPES = { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: 
 
 class Reader {
   constructor(text) {
-    this.text = text.replace(/^\uFEFF/, '');
+    // BOM 一律剥掉，不能只剥开头那一个：有些编辑器或 git 的行尾转换会把 BOM 挪到
+    // 文件中间，留下孤立的 \uFEFF，只剥开头会漏掉，解析会直接失败。
+    this.text = text.replace(/\uFEFF/g, '');
     this.i = 0;
   }
 

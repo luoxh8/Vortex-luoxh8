@@ -14,6 +14,7 @@ import path from 'node:path';
 import { parseJsonc, findDuplicateKeys } from '../core/jsonc.mjs';
 import { renderGenerated, renderPatched, renderAppended } from '../lib/i18n-file.mjs';
 import { parsePlanName } from '../lib/plans.mjs';
+import { looksUntranslated, isPlaceholderOnly, placeholdersOf } from '../lib/lang.mjs';
 
 let passed = 0;
 const failures = [];
@@ -120,6 +121,53 @@ check('模组名里带点也能正确切分', () => {
 
 check('不认识的文件返回 null', () => {
   assertEqual(parsePlanName('readme.txt'), null, 'txt 应返回 null');
+});
+
+console.log('\n翻译完成度判定\n');
+
+check('纯占位符模板不算「没翻」', () => {
+  for (const v of ['{{chestName}}', '{{name}} #{{number}}', '{{locationName}} #{{number}}']) {
+    assert(isPlaceholderOnly(v), `${v} 应判为纯占位符`);
+    assert(!looksUntranslated(v), `${v} 不应算未翻译`);
+  }
+});
+
+check('带中文的算翻好了', () => {
+  assert(!looksUntranslated('技能'), '中文不应算未翻译');
+  assert(!looksUntranslated('按 {{key}} 切换'), '含中文的不应算未翻译');
+  assert(!looksUntranslated('Keybind（键盘）'), '含中文的不应算未翻译');
+});
+
+check('整条英文的算没翻', () => {
+  for (const v of ['Options', 'Catch limit per fish', 'Whether to break stones in the mine.']) {
+    assert(looksUntranslated(v), `${v} 应算未翻译`);
+  }
+});
+
+check('空值和纯符号不算没翻', () => {
+  for (const v of ['', '   ', '123', '#1', '+1', '---', '1x']) {
+    assert(!looksUntranslated(v), `${JSON.stringify(v)} 不应算未翻译`);
+  }
+});
+
+check('单个字母的标签不算（避免把 R/G/B 这类当英文）', () => {
+  for (const v of ['R', 'G', 'B', 'X']) {
+    assert(!looksUntranslated(v), `${JSON.stringify(v)} 不应算未翻译`);
+  }
+});
+
+check('两个字母以上的英文标签算没翻（例如 ID 这种确实要翻）', () => {
+  for (const v of ['ID', 'On', 'Off']) {
+    assert(looksUntranslated(v), `${JSON.stringify(v)} 应算未翻译`);
+  }
+});
+
+check('占位符比较：允许换位与重复，不允许删改', () => {
+  assertEqual(placeholdersOf('{{a}} 和 {{b}}'), placeholdersOf('{{b}} 与 {{a}}'), '换位应视为一致');
+  assertEqual(placeholdersOf('{0} 个 {1}'), placeholdersOf('{1} 的 {0}'), '数字占位符换位应一致');
+  assert(placeholdersOf('{{a}}') !== placeholdersOf(''), '删掉占位符应被查出');
+  assert(placeholdersOf('{{a}}') !== placeholdersOf('{{aa}}'), '改拼写应被查出');
+  assertEqual(placeholdersOf('{0:0.0}s'), placeholdersOf('{0:0.0} 秒'), '带格式的占位符应认出');
 });
 
 console.log('\n三种操作\n');

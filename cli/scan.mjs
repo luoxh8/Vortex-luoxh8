@@ -5,23 +5,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, contextOrExit } from './_common.mjs';
 import { listMods, readI18n } from '../lib/i18n-file.mjs';
+import { looksUntranslated } from '../lib/lang.mjs';
 
 const USAGE = 'node cli/scan.mjs [--game <id|路径>] [--lang zh] [游戏根目录]';
 const parsed = parseArgs(process.argv.slice(2));
 if (parsed.flags.has('help')) { console.log(USAGE); process.exit(0); }
 
 const ctx = contextOrExit(parsed, USAGE);
-const CJK = /[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/;
-
-/** 值看起来还是英文吗（含拉丁字母、且不含中日韩文字） */
-function looksUntranslated(v, scriptTest) {
-  if (typeof v !== 'string' || !v.trim()) return false;
-  if (scriptTest.test(v)) return false;
-  return /[A-Za-z]{2,}/.test(v);
-}
-
-/** 纯占位符模板（例如 "{{name}} #{{number}}"）本来就不该翻译 */
-const onlyPlaceholders = (v) => /^\{\{/.test(v.trim()) && /^[\s{}#.\w]*$/.test(v.replace(/\{\{[^}]*\}\}/g, ''));
 
 console.log(`${ctx.game.name} · 目标语言 ${ctx.lang}\n游戏目录：${ctx.gameRoot}\n`);
 
@@ -44,8 +34,7 @@ for (const mod of listMods(ctx.game, ctx.gameRoot).sort()) {
 
   const translated = readI18n(target);
   const missing = Object.keys(source).filter(k => !(k in translated));
-  const untranslated = Object.keys(source).filter(k =>
-    k in translated && looksUntranslated(translated[k], CJK) && !onlyPlaceholders(String(translated[k])));
+  const untranslated = Object.keys(source).filter(k => k in translated && looksUntranslated(translated[k]));
 
   totalMissing += missing.length;
   totalUntranslated += untranslated.length;
