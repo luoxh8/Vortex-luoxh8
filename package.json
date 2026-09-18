@@ -1,0 +1,23 @@
+{
+  "name": "vortex-luoxh8",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "把游戏模组的界面文本翻成中文，并保证译文不被 Vortex 的重新部署冲掉。核心工具与游戏无关，每个游戏一个 game.json。",
+  "keywords": ["vortex", "mods", "i18n", "translation", "chinese", "stardew-valley", "smapi"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "selftest": "node cli/selftest.mjs",
+    "scan": "node cli/scan.mjs",
+    "apply": "node cli/apply.mjs",
+    "verify": "node cli/verify.mjs",
+    "restore": "node cli/restore.mjs",
+    "sdv:scan": "node cli/scan.mjs --game stardew-valley",
+    "sdv:apply": "node cli/apply.mjs --game stardew-valley",
+    "sdv:verify": "node cli/verify.mjs --game stardew-valley",
+    "sdv:restore": "node cli/restore.mjs --game stardew-valley --all"
+  }
+}

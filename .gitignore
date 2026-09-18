@@ -1,0 +1,12 @@
+# 依赖与系统垃圾
+node_modules/
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+
+# apply 自动产生的时间戳备份：留最近一份就够了，不必进仓库
+games/*/backup/applied-*/

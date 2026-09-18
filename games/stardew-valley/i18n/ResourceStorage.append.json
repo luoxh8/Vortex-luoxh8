@@ -1,0 +1,12 @@
+{
+  "GMCM_UseSharedResources_Name": "多人游戏共享资源",
+  "GMCM_Option_AutoSelectSearchBar_Name": "自动选中搜索栏",
+  "GMCM_Option_SearchBarOffsetX_Name": "搜索栏偏移 X 坐标",
+  "GMCM_Option_SearchBarOffsetY_Name": "搜索栏偏移 Y 坐标",
+  "GMCM_Option_SortButtonOffsetX_Name": "排序按钮偏移 X 坐标",
+  "GMCM_Option_SortButtonOffsetY_Name": "排序按钮偏移 Y 坐标",
+  "sort-0": "名称（升序）",
+  "sort-1": "名称（降序）",
+  "sort-2": "数量（升序）",
+  "sort-3": "数量（降序）"
+}

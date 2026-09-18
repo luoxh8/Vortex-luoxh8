@@ -1,0 +1,15 @@
+﻿{
+  "message.enabled": "你现在可以再次捕捉传说鱼类了。按 {{key}} 禁用该功能。",
+  "message.disabled": "你现在无法再次捕捉传说鱼类了。按 {{key}} 启用该功能。",
+  "config.options": "选项",
+  "config.catch-limit.name": "每种鱼的捕捉次数",
+  "config.catch-limit.desc": "每种传说鱼类可以重复捕捉的频率。",
+  "config.catch-limit.Unlimited": "不限次数",
+  "config.catch-limit.OnePerDay": "每种每天一次",
+  "config.catch-limit.OnePerWeek": "每种每周一次",
+  "config.catch-limit.OnePerSeason": "每种每季一次",
+  "config.catch-limit.OnePerYear": "每种每年一次",
+  "config.controls": "按键绑定",
+  "config.toggle-key.name": "功能开关",
+  "config.toggle-key.desc": "使用该快捷键，来切换是否可以再次捕捉传说鱼类的功能。"
+}

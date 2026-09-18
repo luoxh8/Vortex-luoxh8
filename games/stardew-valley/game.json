@@ -1,0 +1,19 @@
+{
+  "id": "stardew-valley",
+  "name": "星露谷物语",
+  "nameEn": "Stardew Valley",
+  "loader": "SMAPI",
+  "defaultDir": "D:\\SteamLibrary\\steamapps\\common\\Stardew Valley",
+  "gameDirEnv": "SDV_DIR",
+  "modsDir": "Mods",
+  "sourceFile": "default.json",
+  "targetFileTemplate": "{lang}.json",
+  "langNote": "游戏内语言设成中文（startup_preferences 里的 languageCode 为 zh）才会加载 zh.json。",
+  "defaultLang": "zh",
+  "languages": {
+    "zh": { "code": "zh", "name": "简体中文" }
+  },
+  "placeholderSyntax": {
+    "tokens": "{{token}} 由模组替换，{0} {1} 由 C# 格式化，都不能改"
+  }
+}

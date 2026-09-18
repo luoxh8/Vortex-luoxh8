@@ -1,0 +1,6 @@
+{
+  "farm.auto-water-pet-bowls": "自动给宠物碗加水",
+  "skills.increase-mastery": "提高精通等级：{{currentLevel}}",
+  "weather.cannot-change-weather": "游戏已强制明天的天气为{{weather}}，因此无法更改。",
+  "time.fade-time-frozen-message": "几秒后隐藏“{{timeFrozen}}”"
+}

@@ -1,0 +1,7 @@
+{
+  "config.custom-connectors.desc": "用于连接相邻机器的物品。你可以填写内部英文名称（例如 \"Wood Path\"）或限定的物品 ID（例如 \"(O)405\"），多个物品之间用逗号分隔。",
+  "config.junimo-hut-move-items-into-hut.name": "移入祝尼魔屋的物品 ID",
+  "config.junimo-hut-move-items-into-hut.desc": "应该被移入祝尼魔屋的物品（不受 {{gemFieldName}} 等其他设置影响）。这是一个用逗号分隔的限定物品 ID 列表（可在 Lookup Anything 模组的“内部 ID”字段中查看）。",
+  "config.junimo-hut-ignore-items.name": "忽略的物品 ID",
+  "config.junimo-hut-ignore-items.desc": "应该被忽略的物品（不管 {{gemFieldName}} 等其他设置如何，都不会被移动）。这是一个用逗号分隔的限定物品 ID 列表（可在 Lookup Anything 模组的“内部 ID”字段中查看）。"
+}

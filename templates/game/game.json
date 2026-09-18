@@ -1,0 +1,20 @@
+{
+  "id": "example-game",
+  "name": "示例游戏",
+  "nameEn": "Example Game",
+  "loader": "游戏用的模组加载器",
+
+  "_说明": "复制这个目录到 games/<你的游戏>，把下面的值改成实际路径和文件名。",
+
+  "defaultDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Example Game",
+  "gameDirEnv": "EXAMPLE_GAME_DIR",
+
+  "modsDir": "Mods",
+  "sourceFile": "default.json",
+  "targetFileTemplate": "{lang}.json",
+
+  "defaultLang": "zh",
+  "languages": {
+    "zh": { "code": "zh", "name": "简体中文" }
+  }
+}
