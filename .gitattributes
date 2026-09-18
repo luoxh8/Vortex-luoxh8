@@ -1,0 +1,7 @@
+# 统一按 LF 存进仓库，避免不同系统 checkout 时整文件行尾变化
+* text=auto eol=lf
+
+# 二进制
+*.png binary
+*.jpg binary
+*.xnb binary
