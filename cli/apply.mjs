@@ -95,13 +95,22 @@ for (const plan of todo) {
 // ── 快照 ────────────────────────────────────────────────────────────
 // games/<游戏>/<语言>/ 是给人看的成品快照（方便直接翻看、diff、手工拷走）。
 // 它是从游戏目录里刚写好的内容复制的，所以永远和应用结果一致。
+// 模组被卸载后，它对应的快照也会删掉，避免快照目录烂掉、让人误以为还装着。
 let snapshots = 0;
+const pruned = [];
+fs.mkdirSync(ctx.zhDir, { recursive: true });
 for (const { mod } of todo) {
   const src = ctx.targetOf(mod);
   if (!fs.existsSync(src)) continue;
-  fs.mkdirSync(ctx.zhDir, { recursive: true });
   fs.copyFileSync(src, path.join(ctx.zhDir, `${mod}.${ctx.targetFile}`));
   snapshots++;
+}
+for (const file of fs.readdirSync(ctx.zhDir).filter(f => f.endsWith(`.${ctx.targetFile}`))) {
+  const mod = file.slice(0, -`.${ctx.targetFile}`.length);
+  if (!installed.has(mod)) {
+    fs.unlinkSync(path.join(ctx.zhDir, file));
+    pruned.push(mod);
+  }
 }
 
 // ── 校验 ────────────────────────────────────────────────────────────
@@ -110,6 +119,7 @@ const bad = report.filter(r => r.problems.length);
 
 console.log(results.join('\n'));
 console.log(`\n成品快照已更新：${path.relative(process.cwd(), ctx.zhDir)}/（${snapshots} 个）`);
+if (pruned.length) console.log(`已卸载的模组，快照一并清理：${pruned.join('、')}`);
 if (notInstalled.length) console.log(`跳过（游戏里没装）：${notInstalled.join('、')}`);
 if (noData.length) console.log(`提示：这些模组还没有译文数据，会被跳过：${noData.join('、')}`);
 

@@ -114,6 +114,7 @@ node cli\apply.mjs --game "E:\Steam\steamapps\common\Stardew Valley"
 - 写入前把原文件复制到 `backup/applied-<时间戳>/`。
 - 有任何一个模组写失败，就删掉本次新建的文件并退出，不会留下半拉子状态。
 - 写完对本次涉及的模组跑一遍完整校验；不过就报错退出（改动保留，便于排查）。
+- 顺手更新 `<语言>/` 成品快照，并清掉已卸载模组的旧快照，避免快照目录烂掉。
 
 `verify.mjs` 检查五件事：
 
